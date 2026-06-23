@@ -601,6 +601,10 @@ static dd4hep::Ref_t create_detector_SCEPCal_MainLayer(dd4hep::Detector& theDete
   xml_comp_t crystalFXML = detectorXML.child(_Unicode(crystalF));
   xml_comp_t crystalRXML = detectorXML.child(_Unicode(crystalR));
 
+  std::string mat_name = crystalFXML.attr<std::string>(_U(material));
+  
+  
+
   xml_comp_t barrelAssemblyGlobalVisXML = detectorXML.child(_Unicode(barrelAssemblyGlobalVis));
   xml_comp_t barrelAssemblyPhiVisXML = detectorXML.child(_Unicode(barrelAssemblyPhiVis));
   xml_comp_t barrelAssemblyThetaVisXML = detectorXML.child(_Unicode(barrelAssemblyThetaVis));
@@ -709,11 +713,13 @@ static dd4hep::Ref_t create_detector_SCEPCal_MainLayer(dd4hep::Detector& theDete
 
   std::cout << std::endl;
   std::cout << std::endl;
-  std::cout << "=SCEPCAL MAIN LAYER INPUTS=======================" << std::endl;
+  std::cout << "=SCEPCAL MAIN LAYER INPUTS julia=======================" << std::endl;
   std::cout << std::endl;
+  std::cout << ">>> SCEPCal crystalF material: " << mat_name << std::endl;
   std::cout << "BARREL_HALF_Z:        " << BARREL_HALF_Z << std::endl;
   std::cout << "BARREL_INNER_R:       " << BARREL_INNER_R << std::endl;
   std::cout << "PHI_SEGMENTS:         " << PHI_SEGMENTS << std::endl;
+  
   std::cout << std::endl;
   std::cout << "XTAL_TH_WIDTH:        " << XTAL_TH_WIDTH << std::endl;
   std::cout << "XTAL_DIV_F:           " << XTAL_DIV_F << std::endl;
@@ -722,7 +728,7 @@ static dd4hep::Ref_t create_detector_SCEPCal_MainLayer(dd4hep::Detector& theDete
   std::cout << "XTAL_LEN_F:           " << XTAL_LEN_F << std::endl;
   std::cout << "XTAL_LEN_R:           " << XTAL_LEN_R << std::endl;
   std::cout << std::endl;
-  std::cout << "PROJECTIVE_OFFSET_R:  " << PROJ_OFFSET_R << std::endl;
+  std::cout << "PROJECTIVE_OFFSET_R:  " << PROJ_OFFSET_R << std::endl;  
   std::cout << "PROJECTIVE_OFFSET_X:  " << PROJ_OFFSET_X << std::endl;
   std::cout << "BEAMPIPE_OPENING:     " << BEAMPIPE_OPENING << std::endl;
   std::cout << "REAR_GAP:             " << REAR_GAP << std::endl;
@@ -936,3 +942,12 @@ static dd4hep::Ref_t create_detector_SCEPCal_MainLayer(dd4hep::Detector& theDete
 }
 
 DECLARE_DETELEMENT(SCEPCal_MainLayer, create_detector_SCEPCal_MainLayer)
+
+
+
+
+
+
+
+
+

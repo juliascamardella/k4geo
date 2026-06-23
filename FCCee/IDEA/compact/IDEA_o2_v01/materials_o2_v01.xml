@@ -8,6 +8,17 @@
     <composite n="4" ref="O"/>
   </material>
 
+  <!-- Aggiunta del BSO -->
+  <!-- Bismuth Silicate BSO — Bi4Si3O12 -->
+  <material name="BSO">
+    <D type="density" unit="g/cm3" value="6.8"/>
+    <composite n="4" ref="Bi"/>
+    <composite n="3" ref="Si"/>
+    <composite n="12" ref="O"/>
+  </material>
+
+
+
   <material name="FR4">
     <D type="density" unit="g/cm3" value="1.7"/>
     <fraction n="0.1808" ref="Si"/>

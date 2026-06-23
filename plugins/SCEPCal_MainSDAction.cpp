@@ -18,6 +18,9 @@ public:
   std::size_t m_collectionID_scint{0};
   std::size_t m_collectionID_ceren{0};
 
+  
+  // double m_scintPhotoEleGeV{130000.0};   // PWO
+  // double m_scintPhotoEleGeV{1500000.0};   // BSO
   double m_scintPhotoEleGeV{2000.0};   // default value
   double m_cherenBinomialCut{0.00147}; // default value
 
@@ -58,6 +61,7 @@ namespace sim {
     initialize();
     defineCollections();
     InstanceCount::increment(this);
+    // declareProperty("scintPhotoElePerGeV", m_userData.m_scintPhotoEleGeV = 130000.0);
     declareProperty("scintPhotoElePerGeV", m_userData.m_scintPhotoEleGeV = 2000.);
     declareProperty("cherenBinomialCut", m_userData.m_cherenBinomialCut = 0.00147);
   }
