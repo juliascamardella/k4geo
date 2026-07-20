@@ -79,7 +79,7 @@
       3.9*eV  2.82141
     "/>
 
-    <!-- Aggiunta RI del BSO -->
+     <!--Aggiunta RI del BSO -->
     <matrix name="RI_BSO" coldim="2" values="
       1.1*eV  2.01099
       1.5*eV  2.01099
@@ -94,14 +94,41 @@
       3.7637*eV 2.19690
       4.4844*eV 2.33273
       4.9*eV    2.33273
-    "/>
+    "/> 
+
+    <!--<matrix name="RI_BSO" coldim="2" values="
+      1.1*eV  1.0 Air
+      1.5*eV  1.0
+      1.7711*eV 1.0
+      1.8408*eV 1.0
+      1.9161*eV 1.0
+      2.0868*eV 1.0
+      2.2909*eV 1.0
+      2.5393*eV 1.0
+      2.8482*eV 1.0
+      3.2426*eV 1.0
+      3.7637*eV 1.0
+      4.4844*eV 1.0
+      4.9*eV    1.0
+    "/>-->
+
+    <!--<matrix name="RI_BSO" coldim="2" values="
+      1.1*eV  1.33 H20
+      1.5*eV  1.33
+      1.7711*eV 1.33
+      1.8408*eV 1.33
+      1.9161*eV 1.33
+      2.0868*eV 1.33
+      2.2909*eV 1.33
+      2.5393*eV 1.33
+      2.8482*eV 1.33
+      3.2426*eV 1.33
+      3.7637*eV 1.33
+      4.4844*eV 1.33
+      4.9*eV    1.33
+    "/>-->
     
-    
-    
-
-
-
-
+  
 
 
 >>>>>>> 6d39a3fd (Addition BSO crystal)
@@ -2532,7 +2559,7 @@
 
  <!-- PWO  -->
   <materials>
-    <material name="PbWO">
+    <material name="julia">
       <D value="8.28" unit="g/cm3"/>
       <composite n="1" ref="Pb"/>
       <composite n="1" ref="W"/>
@@ -2564,7 +2591,7 @@
 
 
    <!-- BSO  -->
-    <material name="BSO">
+    <material name="PbWO">
       <D value="6.8" unit="g/cm3"/>
       <composite n="4" ref="Bi"/>
       <composite n="3" ref="Si"/>
@@ -2572,7 +2599,7 @@
       <property name="RINDEX"                     ref="RI_BSO"/>
       <property name="ABSLENGTH"                  ref="AbsLen_BSO"/>
       <property name="SCINTILLATIONCOMPONENT1"    ref="scintFast_BSO"/>
-      <constant name="SCINTILLATIONYIELD"         value="1200/MeV"/>
+      <constant name="SCINTILLATIONYIELD"         value="1500/MeV"/>
       <constant name="SCINTILLATIONTIMECONSTANT1" value="21.778*ns"/>
       <constant name="SCINTILLATIONTIMECONSTANT2" value="97.680*ns"/>
       <constant name="SCINTILLATIONRISETIME1"     value="0.01*ns"/>
@@ -2659,11 +2686,11 @@
       <barrel    system="DetID_ECAL_Barrel" construct="true"/>
       <endcap    system="DetID_ECAL_Endcap" construct="true"/>
 <!-- PWO -->
-      <!--<crystalF  material="PbWO"          vis="crystalFVis"/>  -->
-      <!--<crystalR  material="PbWO"          vis="crystalRVis"/> -->
+      <crystalF  material="PbWO"          vis="crystalFVis"/>  
+      <crystalR  material="PbWO"          vis="crystalRVis"/>
 <!-- BSO -->
-      <crystalF  material="BSO"         vis="crystalFVis"/>
-      <crystalR  material="BSO"         vis="crystalRVis"/> 
+      <!--<crystalF  material="BSO"         vis="crystalFVis"/>-->
+      <!--<crystalR  material="BSO"         vis="crystalRVis"/> -->
 
       <barrelAssemblyGlobalVis  vis="barrelAssemblyGlobalVis"/>
       <barrelAssemblyPhiVis     vis="barrelAssemblyPhiVis"/>
