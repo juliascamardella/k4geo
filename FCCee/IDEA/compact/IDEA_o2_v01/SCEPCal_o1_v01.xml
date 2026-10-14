@@ -79,7 +79,7 @@
       3.9*eV  2.82141
     "/>
 
-     <!--Aggiunta RI del BSO -->
+     <!--BSO refractive index vectors, calculated from Bortfeld & Meier, [1.77*eV-4.95*eV] [700 nm - 250 nm] -->
     <matrix name="RI_BSO" coldim="2" values="
       1.1*eV  2.01099
       1.5*eV  2.01099
@@ -96,39 +96,7 @@
       4.9*eV    2.33273
     "/> 
 
-    <!--<matrix name="RI_BSO" coldim="2" values="
-      1.1*eV  1.0 Air
-      1.5*eV  1.0
-      1.7711*eV 1.0
-      1.8408*eV 1.0
-      1.9161*eV 1.0
-      2.0868*eV 1.0
-      2.2909*eV 1.0
-      2.5393*eV 1.0
-      2.8482*eV 1.0
-      3.2426*eV 1.0
-      3.7637*eV 1.0
-      4.4844*eV 1.0
-      4.9*eV    1.0
-    "/>-->
-
-    <!--<matrix name="RI_BSO" coldim="2" values="
-      1.1*eV  1.33 H20
-      1.5*eV  1.33
-      1.7711*eV 1.33
-      1.8408*eV 1.33
-      1.9161*eV 1.33
-      2.0868*eV 1.33
-      2.2909*eV 1.33
-      2.5393*eV 1.33
-      2.8482*eV 1.33
-      3.2426*eV 1.33
-      3.7637*eV 1.33
-      4.4844*eV 1.33
-      4.9*eV    1.33
-    "/>-->
-    
-  
+   
 
 
 >>>>>>> 6d39a3fd (Addition BSO crystal)
@@ -919,7 +887,7 @@
       3.86293*eV 0.0120495
       3.86895*eV 0.0200286
     "/>
-    <!-- Absorption length BSO - from PG lab measured on SICCAS, [1.77 eV, 4.94 eV] -->
+    <!-- Absorption length BSO - from Perugia lab measured on SICCAS crystals, [1.77 eV, 4.94 eV] -->
     <matrix name="AbsLen_BSO" coldim="2" values="
       1.1*eV  545.0*mm
       1.5*eV  545.0*mm
@@ -1378,7 +1346,7 @@
       5.0*eV    1.0*mm
     "/>
 
-    <!-- Scintillation fast component BSO -->
+    <!-- Scintillation fast component BSO, from Naples laboratory for Epic-Crystals, [1.37*eV-3.76*eV] -->
     <matrix name="scintFast_BSO" coldim="2" values="
       1.3776*eV 0.000650
       1.3783*eV 0.000548
@@ -2559,7 +2527,7 @@
 
  <!-- PWO  -->
   <materials>
-    <material name="julia">
+    <material name="PbWO">
       <D value="8.28" unit="g/cm3"/>
       <composite n="1" ref="Pb"/>
       <composite n="1" ref="W"/>
@@ -2591,7 +2559,7 @@
 
 
    <!-- BSO  -->
-    <material name="PbWO">
+    <material name="BSO">
       <D value="6.8" unit="g/cm3"/>
       <composite n="4" ref="Bi"/>
       <composite n="3" ref="Si"/>
@@ -2599,12 +2567,12 @@
       <property name="RINDEX"                     ref="RI_BSO"/>
       <property name="ABSLENGTH"                  ref="AbsLen_BSO"/>
       <property name="SCINTILLATIONCOMPONENT1"    ref="scintFast_BSO"/>
-      <constant name="SCINTILLATIONYIELD"         value="1500/MeV"/>
-      <constant name="SCINTILLATIONTIMECONSTANT1" value="21.778*ns"/>
-      <constant name="SCINTILLATIONTIMECONSTANT2" value="97.680*ns"/>
-      <constant name="SCINTILLATIONRISETIME1"     value="0.01*ns"/>
+      <constant name="SCINTILLATIONYIELD"         value="1500/MeV"/>  <!-- Yield from 'Inorganic Scintillators for Detector Systems' book -->
+      <constant name="SCINTILLATIONTIMECONSTANT1" value="21.778*ns"/> <!-- Decay time constant, from Naples  PMT measurements on SICCAS crystals  -->
+      <constant name="SCINTILLATIONTIMECONSTANT2" value="97.680*ns"/> <!-- Decay time constant, from Naples  PMT measurements on SICCAS crystals  -->
+      <constant name="SCINTILLATIONRISETIME1"     value="0.01*ns"/> <!-- Rise time constant, arbitrary -->
       <constant name="SCINTILLATIONRISETIME2"     value="0.01*ns"/>
-      <constant name="SCINTILLATIONYIELD1"        value="0.12"/>
+      <constant name="SCINTILLATIONYIELD1"        value="0.12"/> <!-- Naples measurements on SICCAS crystals  -->
       <constant name="SCINTILLATIONYIELD2"        value="0.88"/>
       <constant name="RESOLUTIONSCALE"            value="1."/>
     </material>
@@ -2613,6 +2581,10 @@
   <!--
       Segmented Crystal Electromagnetic Precision ECAL.
       Wonyong Chung
+
+
+      Modified by: Julia Scamardella, University of Naples 2026
+      Changes: added the BSO crystal characteristics 
   -->
 
   <readouts>

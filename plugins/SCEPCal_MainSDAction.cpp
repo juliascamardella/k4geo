@@ -1,6 +1,9 @@
 //===============================
 // Author: Wonyong Chung
 //         Princeton University
+
+// Modified by: Julia Scamardella
+//              University of Naples
 //===============================
 #include "DDG4/Factories.h"
 #include "DDG4/Geant4SensDetAction.inl"
@@ -12,8 +15,22 @@
 #include "Randomize.hh"
 #include "detectorSegmentations/SCEPCal_MainSegmentation_k4geo.h"
 
+// ---------------------------------------------------------------------------
+// Added by Julia Scamardella: SiPM photon detection efficiency (PDE) and geometric efficiency.
+//  - SiPM_PDE: tabulated PDE of the 3x3 mm^2 SiPM as a function of the photon wavelength (nm).
+//
+// How the efficiencies are applied:
+//  - Cherenkov: photons are simulated one by one, so the wavelength-dependent PDE is applied photon by photon according to each photon's wavelength.
+//  - Scintillation: photons are not simulated individually, so an effective PDE is used instead. It is the convolution of the SiPM PDE with the
+//    emission spectrum of the crystal, and amounts to 16%.
+//  - Geometric efficiency: applied to both signals. It is the ratio between
+//    the SiPM sensitive area and the crystal face, 3x3 mm^2 / 1x1 cm^2 = 9%.
+// ---------------------------------------------------------------------------
+
 namespace SCEPCal {
-// PDE SIPM 3x3
+// Source of the PDE: Hamamatsu S14160-6050HS SiPM (50 um SPAD pitch, 14.331 microcells). 
+// The PDE curve was taken from the datasheet:
+// https://www.hamamatsu.com/eu/en/product/optical-sensors/mppc/mppc_mppc-array/S14160-3010PS.html
 inline const std::vector<std::pair<double, double>>& SiPM_PDE_table() {
   static const std::vector<std::pair<double, double>> tbl = {
     {281.741, 0.005957}, {283.227, 0.010426}, {283.227, 0.017128}, {283.227, 0.025319},
@@ -37,7 +54,7 @@ inline const std::vector<std::pair<double, double>>& SiPM_PDE_table() {
   return tbl;
 }
 
-// Interpolazione tra i punti della pde
+
 inline double SiPM_PDE(double lambda_nm) {
   const auto& tbl = SiPM_PDE_table();
   if (lambda_nm <= tbl.front().first) return tbl.front().second;
@@ -61,15 +78,11 @@ public:
   std::size_t m_collectionID_ceren{0};
 
   
-  //double m_scintPhotoEleGeV{21372.59};   // PWO after pde
-  double m_scintPhotoEleGeV{246606.84};   // BSO after pde
-  double m_geomEff{0.09};  // (3mm x 3mm) / (10mm x 10mm) SiPM su cristallo
+  //double m_scintPhotoEleGeV{21372.59};   // PbWO after pde only
+  double m_scintPhotoEleGeV{246606.84};   // BSO after pde only
+  double m_geomEff{0.09};  // (3mm x 3mm) / (10mm x 10mm) SiPM / crystal front face
   //double m_geomEff{1};  // Nominal
-
-  //double m_scintPhotoEleGeV{21372.59};
-  // double m_scintPhotoEleGeV{1500000.0};   // BSO
-  //double m_scintPhotoEleGeV{1500000.0};   // default value
-  //double m_cherenBinomialCut{0.00147}; // default value
+  //double m_cherenBinomialCut{0.00147}; // previous implementation:  default value binomial cut
 
 
   
@@ -113,13 +126,10 @@ namespace sim {
       : Geant4Sensitive(ctxt, nam, det, lcdd_ref), m_collectionID(0) {
     initialize();
     defineCollections();
-    InstanceCount::increment(this);
-    //declareProperty("scintPhotoElePerGeV", m_userData.m_scintPhotoEleGeV = 21372.59); // al posto di 130000
-    //declareProperty("scintPhotoElePerGeV", m_userData.m_scintPhotoEleGeV = 1500000); 
-    declareProperty("scintPhotoElePerGeV", m_userData.m_scintPhotoEleGeV = 246606.84); // al posto di 1500000
-    //declareProperty("cherenBinomialCut", m_userData.m_cherenBinomialCut = 0.00147);
-    //declareProperty("scintPhotoElePerGeV", m_userData.m_scintPhotoEleGeV = 130000);
-    declareProperty("geomEfficiency", m_userData.m_geomEff = 0.09);
+    InstanceCount::increment(this); 
+    declareProperty("scintPhotoElePerGeV", m_userData.m_scintPhotoEleGeV = 246606.84); // nominal ly (= 1500e3 ph/GeV) * effective_pde(0.1644) 
+    //declareProperty("cherenBinomialCut", m_userData.m_cherenBinomialCut = 0.00147); // previous implementation
+    declareProperty("geomEfficiency", m_userData.m_geomEff = 0.09); // 3x3 mm2 / 1x1 cm2
   }
 
   template <>
@@ -174,15 +184,16 @@ namespace sim {
 =======
         auto* hitC = newOrExistingHitIn(m_userData.m_collectionID_ceren, true);
 
-        // lungh. d'onda fotone Cherenkov dall'energia cinetica
+        // Cherenkov photon wavelength from its kinetic energy (hc = 1239.84 eV*nm)
         const double photonEnergy_eV = track->GetKineticEnergy() / CLHEP::eV;
         const double lambda_nm       = 1239.84198 / photonEnergy_eV; // hc [eV*nm]
 
-
+// Apply the SiPM PDE (wavelength dependent) and the geometric efficiency
+// to decide whether this photon is detected.
 
         // The EDM4HEP converter divides this entry by CLHEP::GeV to save energies in GeV unit.
         // Here, we are saving C counts so we multiply by CLHEP::GeV to have the correct number in the output file.
-        // prossima riga da commentare se vuoi solo il numero di fotoni Cherenkov di Geant4
+        // Comment out the next two lines to count only the raw number of Cherenkov photons produced by G4.
         if (m_userData.SmearCsignal(lambda_nm))
 >>>>>>> 309c3bac (Change crystal and PDE response function)
           hitC->energyDeposit += 1 * CLHEP::GeV;
