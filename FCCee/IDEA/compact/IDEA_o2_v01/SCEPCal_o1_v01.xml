@@ -6,8 +6,7 @@
   </includes>
 
   <properties>
-<<<<<<< HEAD
-=======
+
     <matrix name="RINDEX__Air" coldim="2" values="  
       1.1*eV 1.
       1.500*eV 1.
@@ -79,7 +78,7 @@
       3.9*eV  2.82141
     "/>
 
-     <!--BSO refractive index vectors, calculated from Bortfeld & Meier, [1.77*eV-4.95*eV] [700 nm - 250 nm] -->
+    <!--BSO refractive index vectors, calculated from Bortfeld & Meier, [1.77*eV-4.95*eV] [700 nm - 250 nm] -->
     <matrix name="RI_BSO" coldim="2" values="
       1.1*eV  2.01099
       1.5*eV  2.01099
@@ -95,11 +94,8 @@
       4.4844*eV 2.33273
       4.9*eV    2.33273
     "/> 
-
-   
-
-
->>>>>>> 6d39a3fd (Addition BSO crystal)
+    
+  
     <matrix name="RI_LYSO" coldim="2" values="
       1.0*eV 1.82
       1.84*eV 1.82
@@ -2658,11 +2654,11 @@
       <barrel    system="DetID_ECAL_Barrel" construct="true"/>
       <endcap    system="DetID_ECAL_Endcap" construct="true"/>
 <!-- PWO -->
-      <crystalF  material="PbWO"          vis="crystalFVis"/>  
-      <crystalR  material="PbWO"          vis="crystalRVis"/>
+      <!--<crystalF  material="PbWO"          vis="crystalFVis"/>  -->
+      <!--<crystalR  material="PbWO"          vis="crystalRVis"/> -->
 <!-- BSO -->
-      <!--<crystalF  material="BSO"         vis="crystalFVis"/>-->
-      <!--<crystalR  material="BSO"         vis="crystalRVis"/> -->
+      <crystalF  material="BSO"         vis="crystalFVis"/>
+      <crystalR  material="BSO"         vis="crystalRVis"/> 
 
       <barrelAssemblyGlobalVis  vis="barrelAssemblyGlobalVis"/>
       <barrelAssemblyPhiVis     vis="barrelAssemblyPhiVis"/>
